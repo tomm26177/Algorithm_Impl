@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <algorithm>
 
@@ -161,24 +161,38 @@ public:
 
 	void removeElement(const T& dataToFind, bool (*comparator)(const T&, const T&)) {
 		Node<T>* temp = Head;
-		while (temp != nullptr) {
+		for (int i = 0; i < size;i++) {	
 			if (comparator(temp->data, dataToFind)) {
-				Node<T>* previous = temp->previous;
+				if (i==0)
+				{
+					this->removeFirstElement();
+					return;
+				}
+				if (i == size-1) {
+					this->removeLastElement();
+					return;
+				}
+				Node<T>*  previous = temp->previous;
 				Node<T>* next = temp->next;
 
-					previous->next = next;
+				
+					previous->next = next;			
 					next->previous = previous;
+					
+			
+				size--;
 				delete temp;
+				return;
 			}
-			
-				temp = temp->previous;
-			
+			temp = temp->previous;
 		}
-	
 	}
 
+	
+
+
 	void clear() {
-		while (Head != nullptr) {
+		for (int i = 0; i < size; i++) {
 			Node<T>* temp = Head;
 			Head = Head->previous;
 			delete temp;
@@ -191,9 +205,9 @@ public:
 	
 		
 		Node<T>* temp = Head;
-		while(temp!=nullptr) {
+		for(int i = 0; i < size; i++) {
 			
-			std::cout  << " element:  " << temp->data << "\n";
+			std::cout  << " element nr "<<i+1 << ":	" << temp->data << "\n";
 			temp = temp->previous;
 		}
 	}
@@ -204,6 +218,12 @@ bool compareInt(const int& a, const int& b) {
 	return a == b; 
 }
 
+
+
+
+
+
+
 int main() {
 	List <int> list;
 	
@@ -213,15 +233,15 @@ int main() {
 	list.addElementToEnd(4);
 	list.addElementToEnd(5);
 	list.addElementToEnd(6);
-	list.removeLastElement();
-	list.removeFirstElement();
-	list.clear();
+
 	
 
-	int elementToFind = 3;
+	int elementToFind = 6;
 	Node<int>* foundElement = list.findElement(elementToFind, compareInt);
-	//list.removeElement(elementToFind, compareInt);
 	
+	list.removeElement(elementToFind, compareInt);
+	
+	//list.clear();
 
 
 	
@@ -230,6 +250,11 @@ int main() {
 
 
 	std::cout << "list size: " << list.size << "\n";
+
+
+
+
+}
 
 
 
